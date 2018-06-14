@@ -22,7 +22,7 @@ class MainSimulation extends Simulation {
       .during(1.minutes)(
         exec(
           readToggle
-            pause(1.seconds, 2.seconds)
+          pause(1.seconds, 2.seconds)
         )
       )
       .inject(
