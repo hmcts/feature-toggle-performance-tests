@@ -1,20 +1,11 @@
 package uk.gov.hmcts.reform.featuretoggle.actions.util
 
-import java.util.UUID
-
-import scala.collection.mutable
-import scala.util.Random
+import com.typesafe.config.ConfigFactory
 
 object ToggleIdStore {
 
-  private val ids = mutable.MutableList[String]()
+  private val totalCount: Int = ConfigFactory.load().getInt("total_toggle_count")
+  private val ids = (1 to totalCount).map(i => s"perf-test-$i")
 
-  def addRandom() = {
-    val id = "perf-test-" + UUID.randomUUID.toString
-    ids += id
-
-    id
-  }
-
-  def getRandom() = ids((new Random).nextInt(ids.size))
+  def getAll() = ids
 }
