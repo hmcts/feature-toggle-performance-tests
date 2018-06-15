@@ -11,10 +11,12 @@ import scala.concurrent.duration._
 
 class MainSimulation extends Simulation {
 
+  implicit def asFiniteDuration(d: java.time.Duration) = Duration.fromNanos(d.toNanos)
+
   val config: Config = ConfigFactory.load()
 
   private val totalToggles = config.getInt("total_toggle_count")
-  private val readDuration = config.getDuration("read_duration").asInstanceOf[FiniteDuration]
+  private val readDuration = config.getDuration("read_duration")
   private val readDelay: FiniteDuration = 10.seconds
   private val deleteDelay: FiniteDuration = readDelay + readDuration + 15.seconds
   private val userCount = config.getInt("user_count")
