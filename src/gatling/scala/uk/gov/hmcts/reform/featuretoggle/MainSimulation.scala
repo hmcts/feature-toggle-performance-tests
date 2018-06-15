@@ -11,6 +11,7 @@ import scala.concurrent.duration._
 
 class MainSimulation extends Simulation {
 
+  // Typesafe Config does not handle Scala types.
   implicit def asFiniteDuration(d: java.time.Duration) = Duration.fromNanos(d.toNanos)
 
   val config: Config = ConfigFactory.load()
