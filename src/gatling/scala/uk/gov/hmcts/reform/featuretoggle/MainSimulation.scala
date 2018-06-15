@@ -11,12 +11,16 @@ import scala.concurrent.duration._
 
 class MainSimulation extends Simulation {
 
+  // Typesafe Config does not handle Scala types.
+  implicit def asFiniteDuration(d: java.time.Duration) = Duration.fromNanos(d.toNanos)
+
   val config: Config = ConfigFactory.load()
 
   private val totalToggles = config.getInt("total_toggle_count")
-  private val readDuration: FiniteDuration = 10.minutes
+  private val readDuration = config.getDuration("read_duration")
   private val readDelay: FiniteDuration = 10.seconds
   private val deleteDelay: FiniteDuration = readDelay + readDuration + 15.seconds
+  private val userCount = config.getInt("user_count")
 
   setUp(
     scenario("Create toggles")
@@ -33,7 +37,7 @@ class MainSimulation extends Simulation {
       )
       .inject(
         nothingFor(readDelay), // wait fro previous scenario to end
-        rampUsers(100).over(10.seconds)
+        rampUsers(userCount).over(10.seconds)
       ),
     scenario("Delete toggles")
       .repeat(totalToggles) {
