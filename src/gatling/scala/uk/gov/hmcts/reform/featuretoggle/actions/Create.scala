@@ -10,10 +10,9 @@ import uk.gov.hmcts.reform.featuretoggle.actions.util.ToggleIdStore
 object Create {
 
   private val config: Config = ConfigFactory.load()
-  private val uidFeeder = Iterator.continually(Map("uid" -> ToggleIdStore.addRandom()))
 
   val createToggle: ChainBuilder =
-    feed(uidFeeder)
+    feed(ToggleIdStore.getAll().map(uid => Map("uid" -> uid)))
       .exec(
         http("Create toggle")
           .put("/api/ff4j/store/features/${uid}")

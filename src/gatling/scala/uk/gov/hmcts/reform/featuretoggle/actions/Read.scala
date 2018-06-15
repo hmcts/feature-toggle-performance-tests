@@ -7,10 +7,8 @@ import uk.gov.hmcts.reform.featuretoggle.actions.util.ToggleIdStore
 
 object Read {
 
-  private val uidFeeder = Iterator.continually(Map("uid" -> ToggleIdStore.getRandom()))
-
   val readToggle: ChainBuilder =
-    feed(uidFeeder)
+    feed(ToggleIdStore.getAll().map(uid => Map("uid" -> uid)).random)
       .exec(
         http("Read toggle")
           .get("/api/ff4j/store/features/${uid}")
