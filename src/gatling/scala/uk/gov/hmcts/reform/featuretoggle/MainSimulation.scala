@@ -47,5 +47,18 @@ class MainSimulation extends Simulation {
         nothingFor(deleteDelay),
         atOnceUsers(1)
       )
-  ).protocols(http.baseURL(config.getString("baseUrl")))
+  ).protocols(
+    {
+      val cfg = http.baseURL(config.getString("baseUrl"))
+
+      if (config.getBoolean("proxy.enabled")) {
+        cfg.proxy(Proxy(
+          config.getString("proxy.host"),
+          config.getInt("proxy.port"))
+        )
+      } else {
+        cfg
+      }
+    }
+  )
 }
