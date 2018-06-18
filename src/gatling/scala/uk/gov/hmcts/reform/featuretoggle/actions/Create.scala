@@ -33,7 +33,7 @@ object Create {
             )
           )
           .check(
-            status.is(201)
+            status.in(201, 202) // it's OK if a toggle already exists.
           )
       )
 }
