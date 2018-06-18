@@ -18,7 +18,7 @@ class MainSimulation extends Simulation {
 
   private val totalToggles = config.getInt("total_toggle_count")
   private val readDuration = config.getDuration("read_duration")
-  private val readDelay: FiniteDuration = 10.seconds
+  private val readDelay: FiniteDuration = 60.seconds
   private val deleteDelay: FiniteDuration = readDelay + readDuration + 15.seconds
   private val userCount = config.getInt("user_count")
 
@@ -36,7 +36,7 @@ class MainSimulation extends Simulation {
         )
       )
       .inject(
-        nothingFor(readDelay), // wait fro previous scenario to end
+        nothingFor(readDelay), // wait for previous scenario to end
         rampUsers(userCount).over(10.seconds)
       ),
     scenario("Delete toggles")
